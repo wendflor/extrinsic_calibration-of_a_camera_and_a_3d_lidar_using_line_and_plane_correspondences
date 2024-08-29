@@ -52,13 +52,14 @@ if __name__ == '__main__':
     #######################################
     # Real Data example 1
     #######################################
-    point_cloud = np.load('example_real_img_lidar_points/selected_points_in_lidar-1.npy')
+    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_raster_on_target_1mm.npy')
     # convert to mm
-    point_cloud *= 1000
+    #point_cloud *= 1000
 
     # find plane and edges equation
     plane_edges_equation, images_edges_process = plane_equation_and_edges_equation_lidar_point_cloud(lidar_point_cloud=point_cloud,
-                                                                               maximim_distance_two_consecutive_points_in_ray=100,
+                                                                               maximim_distance_two_consecutive_points_in_ray=1,
+                                                                               
                                                                                display=True)
     
     print('Plane and Edges equations:')

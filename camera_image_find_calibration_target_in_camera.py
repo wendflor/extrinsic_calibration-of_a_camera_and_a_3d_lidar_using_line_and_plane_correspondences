@@ -4,7 +4,7 @@ import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
 
-from utils_display import show_point_cloud
+from utils_display import show_point_cloud 
 
 
 def find_corners_on_calibration_target(img, num_row, num_col, square, display=False):
@@ -41,7 +41,13 @@ def find_corners_on_calibration_target(img, num_row, num_col, square, display=Fa
         
         corners = np.reshape(corners, newshape=(corners.shape[0], 2))
         corners2 = np.reshape(corners2, newshape=(corners2.shape[0], 2))
-     
+
+        if display:
+            plt.figure(figsize=(10, 8))
+            plt.imshow(img_copy)
+            plt.title('Detected Corners')
+            plt.show()
+
         return {'points_in_3D': objp, 'points_in_image': corners, 'points_in_image_sub_pixel': corners2, 'image_corners': img_copy}
     else:
         return None
@@ -49,10 +55,10 @@ def find_corners_on_calibration_target(img, num_row, num_col, square, display=Fa
 if __name__ == '__main__':
     
     # read image from file
-    img = cv.imread('/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/frame-1.png')
+    img = cv.imread('input_data/zed_calib/calib_zed.png')
     img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 
     # find corners on calibration target
-    points_3d_image_image_subpix = find_corners_on_calibration_target(img=img, num_row=6, num_col=8, square=152, display=True)
+    points_3d_image_image_subpix = find_corners_on_calibration_target(img=img, num_row=6, num_col=8, square=25, display=True)
 
     print(points_3d_image_image_subpix)

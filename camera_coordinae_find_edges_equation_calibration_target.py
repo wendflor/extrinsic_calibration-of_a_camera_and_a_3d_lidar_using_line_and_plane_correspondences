@@ -53,7 +53,7 @@ def find_edge_equation_in_camera_coordinate(line_equation_image, plane_camera_co
 
 if __name__ == '__main__':
 
-    for img_path in ['/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/frame-1.png']:
+    for img_path in ['input_data/zed_calib/calib_zed_yellow_edge.png']:
         
         #####################################
         #   Read Image
@@ -67,7 +67,7 @@ if __name__ == '__main__':
         ######################################
         # read camera calibration information
         ######################################
-        path = '/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/left_camera_calibration_parameters.yaml'
+        path = 'input_data/zed_calib/left_camera_calibration_parameters.yaml'
         calibration_data = read_yaml_file(path=path)
         
         ######################################
@@ -88,11 +88,13 @@ if __name__ == '__main__':
         #   Finds edges
         #   equations in camera image 
         #####################################
-        lines_equations = line_equation_four_edges_calibration_target_in_camera_image(rgb_image=rgb_image, display=True)
+        lines_equations, image_process = line_equation_four_edges_calibration_target_in_camera_image(rgb_image=rgb_image, display=False)
 
         print('All line equations for four edges of calibration target in image')
+        print(lines_equations)
+
         for line_name in lines_equations:
-            
+
             print('Line name: {}'.format(line_name))
             print('Line equation (point, direction): {}'.format(lines_equations[line_name]))
         print('=' * 100)

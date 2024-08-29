@@ -31,7 +31,7 @@ def find_inliers(distance_points_to_plane, distance_to_be_inlier):
 
     return inliers_index
 
-def ransac_plane_in_lidar(lidar_point, maximum_iteration=50000, inlier_ratio=0.9, distance_to_be_inlier=10):
+def ransac_plane_in_lidar(lidar_point, maximum_iteration=50000, inlier_ratio=0.99, distance_to_be_inlier=2):
     """
     lidar_point: numpy array with shape of (n, 3), all measurements are in mm.
     maximum_iteration: maximum iteration before halting the program.
@@ -74,22 +74,27 @@ def ransac_plane_in_lidar(lidar_point, maximum_iteration=50000, inlier_ratio=0.9
     return {'inlier_to_all_data_ratio':best_ratio_plane[0], 'plane_equation':best_ratio_plane[1], 'plane_centroid': plane_centroid}
 
 if __name__ == '__main__':
-
+    """
     # generate an plane (point cloud)
     output_dic, images_generating_process = generate_a_lidar_plane_in_3D(
                                     rotation_vector=np.array([45.0, 45.0, 0.0]), 
+    
                                     translation_vector=np.array([5000.0, 0.0, 0.0]),
                                     display=True
                                 )
-
-    # call function to calculate plane equation
-    best_ratio_plane = ransac_plane_in_lidar(lidar_point=output_dic['lidar_point_with_noise'])
-    print('\nGround Truth Plane Equation:')
-    print(output_dic['plane_equation'])
-    print('Calculated Plane Equation:')
-    print(best_ratio_plane)
-
     for key_i in images_generating_process:
         plt.figure()
         plt.imshow(images_generating_process[key_i])
-    plt.show()
+        plt.show()
+    """
+    # call function to calculate plane equation
+    #best_ratio_plane = ransac_plane_in_lidar(lidar_point=output_dic['lidar_point_with_noise'])
+    #print('\nGround Truth Plane Equation:')
+    #print(output_dic['plane_equation'])
+    #print('Calculated Plane Equation:')
+    #input_file_path = 'example_real_img_lidar_points/selected_points_in_lidar-1.npy'
+    input_file_path = 'input_data/Visionerf_calib/point_cloud_on_target.npy'  
+    points = np.load(input_file_path) # Load  point cloud as a numpy array (N, 3)
+    print(f"Number of Points: '{points.shape[0]}'")
+    best_ratio_plane=ransac_plane_in_lidar(points)
+    print(best_ratio_plane)

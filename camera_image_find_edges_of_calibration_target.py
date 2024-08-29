@@ -212,7 +212,7 @@ def conver_2d_line_equation_to_homogenous_format(line_equation):
 
 if __name__ == '__main__':
 
-    for img_path in ['/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/frame-1.png']:
+    for img_path in ['input_data/zed_calib/calib_zed_yellow_edge.png']:
         # read image
         img_bgr = cv2.imread(img_path)
 

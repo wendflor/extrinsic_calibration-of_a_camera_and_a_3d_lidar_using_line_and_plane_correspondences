@@ -117,7 +117,7 @@ if __name__ == '__main__':
     # Read image
     ################################################################
     # read image
-    img_bgr = cv.imread('/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/frame-1.png')
+    img_bgr = cv.imread('input_data/zed_calib/calib_zed_yellow_edge.png')
 
     # convert BGR to RGB
     rgb_image = cv.cvtColor(img_bgr, cv.COLOR_BGR2RGB)
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     ################################################################
     # calibration information related to camera
     ################################################################
-    path = '/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/left_camera_calibration_parameters.yaml'
+    path = 'input_data/zed_calib/left_camera_calibration_parameters.yaml'
     calibration_data = read_yaml_file(path=path)
     print(calibration_data)
 

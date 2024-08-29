@@ -71,7 +71,7 @@ def init_estimate_R_one_pose(lidar_plane_equation, lidar_edges_equation, camera_
 
     r_estimate_matrix = np.dot(v_t.T, u.T)
     r_estimate_vector_radian = rotation_matrix_to_euler_angles(r_estimate_matrix)
-    r_estimate_vector_degree = r_estimate_vector_radian * (180/np.math.pi)
+    r_estimate_vector_degree = r_estimate_vector_radian * (180/np.pi)
 
     return {'rotation_matrix': r_estimate_matrix, 'rotation_vector_radian':r_estimate_vector_radian, 'rotation_vector_degree':r_estimate_vector_degree}
 
@@ -586,20 +586,19 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
             'scene_lidar_points_projected_image': img_scence_lidar_points}
 
 
-
 if __name__ == '__main__':
     
     all_output = automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_plane_correspondences_2018(
-        img_rgb_path='/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/frame-1.png',
-        point_cloud_on_target_path='example_real_img_lidar_points/selected_points_in_lidar-1.npy',
-        point_cloud_whole_scene_path='example_real_img_lidar_points/selected_points_in_lidar-1_whole_scene.npy',
-        calibration_target_path='/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/left_camera_calibration_parameters.yaml',
-        maximim_distance_two_consecutive_points_in_ray=100,
+        img_rgb_path='input_data/zed_calib/calib_zed_yellow_edge.png',
+        point_cloud_on_target_path='input_data/Visionerf_calib/point_cloud_on_target.npy',
+        point_cloud_whole_scene_path='input_data/Visionerf_calib/point_cloud_whole scene.npy',
+        calibration_target_path='input_data/zed_calib/left_camera_calibration_parameters.yaml',
+        maximim_distance_two_consecutive_points_in_ray=10,
         num_row=6,
         num_col=8,
-        square=152,
+        square=25,
         display=False,
-        save_path='/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/'
+        save_path='output_data/'
     )
 
     init_r = all_output['initial_r']

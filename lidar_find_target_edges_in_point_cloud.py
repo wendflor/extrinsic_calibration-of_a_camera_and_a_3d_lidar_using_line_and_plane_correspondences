@@ -26,7 +26,7 @@ def map_points_to_plane(point_cloud, plane_equation):
     return projected_point_cloud
 
 
-def find_different_lines_2(point_cloud, min_distance=None, maximim_distance_two_consecutive_points_in_ray=100):
+def find_different_lines_2(point_cloud, min_distance=None, maximim_distance_two_consecutive_points_in_ray=2):
     """
     point cloud
     min_distance: minimum distance for two points to be on the same line (mm). if it be None, it find it itself.
@@ -87,7 +87,7 @@ def find_different_lines_2(point_cloud, min_distance=None, maximim_distance_two_
     return lines_copy
 
 
-def find_different_lines(point_cloud, min_distance_between_lines=100):
+def find_different_lines(point_cloud, min_distance_between_lines=1):
     """
     point_cloud: calibration target point cloud
     min_distance_between_lines: minimum distance between two Lidar line in mm.
@@ -99,6 +99,7 @@ def find_different_lines(point_cloud, min_distance_between_lines=100):
 
     lines = []
     line = []
+    
     for point in all_points:
         if len(line) > 0:
             if (point[2] - line[-1][2]) > min_distance_between_lines:
@@ -193,7 +194,7 @@ def generate_point_line(line_equation):
 
     return point_cloud
 
-def find_edges_of_calibration_target_in_lidar(lidar_points, plane_equation, display=False, maximim_distance_two_consecutive_points_in_ray=100):
+def find_edges_of_calibration_target_in_lidar(lidar_points, plane_equation, display=False, maximim_distance_two_consecutive_points_in_ray=5):
 
     # convert to numpy
     point_cloud = np.copy(lidar_points)
@@ -295,3 +296,12 @@ def find_edges_of_calibration_target_in_lidar(lidar_points, plane_equation, disp
             'line_equation_right_lower': right_lower_equation, 'line_equation_right_upper': right_upper_equation}
 
     return all_edges_equations, denoised_plane_centroid, denoised_edges_centroid, plt_images, denoised_plane_points, denoised_edges_points, noisy_plane_points, noisy_edges_points
+
+if __name__ == '__main__':
+    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_raster_on_target_5mm.npy')
+    point_cloud = point_cloud[:, [2, 1, 0]]
+    from lidar_find_plane import ransac_plane_in_lidar
+
+    best_ratio_plane = ransac_plane_in_lidar(point_cloud)
+    plane_equation=best_ratio_plane['plane_equation']
+    find_edges_of_calibration_target_in_lidar(point_cloud, plane_equation)
