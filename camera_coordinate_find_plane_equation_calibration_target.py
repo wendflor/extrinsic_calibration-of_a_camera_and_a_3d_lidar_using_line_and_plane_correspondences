@@ -8,22 +8,22 @@ from camera_image_find_calibration_target_in_camera import \
 from read_calibration_file import read_yaml_file
 
 
-def calculate_plane_equition_by_three_points(three_points):
+def calculate_plane_equation_by_three_points(three_points):
     """
     The input is a 3 * 3 numpu array, each row is a point.
     It returns plane equation that passes those points: a numpy array with shape (4, )
     """
-    # calculate plane equition ax+by+cz+d = 0
+    # calculate plane equation ax+by+cz+d = 0
     vec_1 = three_points[1, :] - three_points[0, :]
     vec_2 = three_points[2, :] - three_points[0, :] 
     normal = np.cross(vec_1, vec_2)
-    if normal[2] < 0:
+    if normal[2] > 0: # vorher <0 
         normal *= -1
     normal /= np.linalg.norm(normal)
     d = -1 * (normal[0] * three_points[0, 0] + normal[1] * three_points[0, 1] + normal[2] * three_points[0, 2])
-    plane_eqiotion = np.array([normal[0], normal[1], normal[2], d])
+    plane_equation = np.array([normal[0], normal[1], normal[2], d])
 
-    return plane_eqiotion
+    return plane_equation
 
 def rotation_and_translation_of_target_in_camera_image(object_points, image_points, camera_matrix, distortion_coefficients):
     """
@@ -71,14 +71,14 @@ def get_calibration_target_plane_equation_in_image(object_points, image_points, 
     rotation_matrix, _ = cv.Rodrigues(src=rvec)
 
     # three points on calibration target obejct
-    four_points = np.array([[0, 0, 0], [1000, 0, 0], [1000, 1000, 0], [0, 1000, 0]])
+    four_points = np.array([[0, 0, 0], [100, 0, 0], [100, 100, 0], [0, 100, 0]]) # before value*10
 
     # rotate and translate points from object to camera coordinate
     four_points = np.dot(rotation_matrix, four_points.T) + tvec
     four_points = four_points.T
 
     # calculate plane equation
-    plane_equation = calculate_plane_equition_by_three_points(three_points=four_points[0:3, :])
+    plane_equation = calculate_plane_equation_by_three_points(three_points=four_points[0:3, :])
 
     return plane_equation
 

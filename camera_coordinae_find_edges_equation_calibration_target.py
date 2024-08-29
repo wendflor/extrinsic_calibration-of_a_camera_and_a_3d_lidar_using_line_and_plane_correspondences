@@ -78,7 +78,7 @@ if __name__ == '__main__':
                             rgb_img=rgb_image,
                             num_row=6,
                             num_col=8,
-                            square=152,
+                            square=25,
                             camera_matrix=calibration_data['camera_matrix'],
                             distortion_coefficients=calibration_data['distortion_coefficients'],
                             display=True
