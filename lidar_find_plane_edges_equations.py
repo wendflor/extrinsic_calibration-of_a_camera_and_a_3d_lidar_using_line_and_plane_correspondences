@@ -7,7 +7,7 @@ from lidar_find_target_edges_in_point_cloud import \
 from lidar_generate_a_plane import generate_a_lidar_plane_in_3D
 
 
-def plane_equation_and_edges_equation_lidar_point_cloud(lidar_point_cloud, maximim_distance_two_consecutive_points_in_ray=100, display=False):
+def plane_equation_and_edges_equation_lidar_point_cloud(lidar_point_cloud, display=False):
     # find plane equation
     best_ratio_plane = ransac_plane_in_lidar(lidar_point=lidar_point_cloud)
     
@@ -15,10 +15,9 @@ def plane_equation_and_edges_equation_lidar_point_cloud(lidar_point_cloud, maxim
     dic_line_equations, denoised_plane_centroid, dic_denoised_edges_centroid, images_edges_process, denoised_plane_points, denoised_edges_points, noisy_plane_points, noisy_edges_points = find_edges_of_calibration_target_in_lidar(
                                 lidar_points=lidar_point_cloud,
                                 plane_equation=best_ratio_plane['plane_equation'],
-                                display=display,
-                                maximim_distance_two_consecutive_points_in_ray=maximim_distance_two_consecutive_points_in_ray)
+                                display=display)
 
-    description = 'plane equation: ax+by+cz+d=0, each line equation: p0 a pont on line and t the direction vector'
+    description = 'plane equation: ax+by+cz+d=0, each line equation: p0 a point on line and t the direction vector'
     return {'plane_equation': best_ratio_plane['plane_equation'],
             'plane_centroid': denoised_plane_centroid,
             'edges_equation':dic_line_equations, 
@@ -52,14 +51,12 @@ if __name__ == '__main__':
     #######################################
     # Real Data example 1
     #######################################
-    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_raster_on_target_1mm.npy')
+    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_on_target_13_17_03.npy')
     # convert to mm
     #point_cloud *= 1000
 
     # find plane and edges equation
     plane_edges_equation, images_edges_process = plane_equation_and_edges_equation_lidar_point_cloud(lidar_point_cloud=point_cloud,
-                                                                               maximim_distance_two_consecutive_points_in_ray=1,
-                                                                               
                                                                                display=True)
     
     print('Plane and Edges equations:')

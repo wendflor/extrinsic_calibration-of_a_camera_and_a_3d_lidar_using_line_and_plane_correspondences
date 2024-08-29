@@ -18,7 +18,6 @@ from read_calibration_file import read_yaml_file
 
 def calculate_plane_equation_edges_equation_in_lidar_camera_coordinate(
     point_cloud,
-    maximim_distance_two_consecutive_points_in_ray,
     calibration_data,
     rgb_image,
     num_row,
@@ -70,7 +69,6 @@ def calculate_plane_equation_edges_equation_in_lidar_camera_coordinate(
     # find plane and edges equation in LiDAR
     plane_edges_equation, image_process_2 = plane_equation_and_edges_equation_lidar_point_cloud(
         lidar_point_cloud=point_cloud,
-        maximim_distance_two_consecutive_points_in_ray=maximim_distance_two_consecutive_points_in_ray,
         display=display
     )
 
@@ -96,7 +94,7 @@ if __name__ == '__main__':
     # Read image
     ################################################################
     # read image
-    img_bgr = cv.imread('/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/frame-1.png')
+    img_bgr = cv.imread('input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png')
 
     # convert BGR to RGB
     rgb_image = cv.cvtColor(img_bgr, cv.COLOR_BGR2RGB)
@@ -104,14 +102,12 @@ if __name__ == '__main__':
     ################################################################
     # Read Point Cloud
     ################################################################
-    point_cloud = np.load('example_real_img_lidar_points/selected_points_in_lidar-1.npy')
-    # convert to mm
-    point_cloud *= 1000
+    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_on_target_13_17_03.npy')
 
     ################################################################
     # calibration information related to camera
     ################################################################
-    path = '/home/farhad-bat/code/find_normal_vector_plane_pointcloud/example_real_img_lidar_points/left_camera_calibration_parameters.yaml'
+    path = 'input_data/zed_calib/left_camera_calibration_parameters.yaml'
     calibration_data = read_yaml_file(path=path)
     print("Calibration Parameters:\n", calibration_data)
 
@@ -121,12 +117,11 @@ if __name__ == '__main__':
     ################################################################
     plane_edges_equations_in_lidar_camera_coordinate = calculate_plane_equation_edges_equation_in_lidar_camera_coordinate(
                                                             point_cloud=point_cloud,
-                                                            maximim_distance_two_consecutive_points_in_ray=100,
                                                             calibration_data=calibration_data,
                                                             rgb_image=rgb_image,
                                                             num_row=6,
                                                             num_col=8,
-                                                            square=152,
+                                                            square=25,
                                                             display=False
                                                         )
 

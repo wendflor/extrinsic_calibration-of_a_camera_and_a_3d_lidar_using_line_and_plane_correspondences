@@ -1,12 +1,11 @@
 import numpy as np
 
-input_file_path = 'input_data/Visionerf_calib/XYZcloud_13_17_03.bin'  # Ersetze durch den Pfad zu deiner .bin-Datei
+input_file_path = 'input_data/Visionerf_calib/XYZcloud_13_17_03.bin'  #  PATH to .bin-file
 point_cloud = np.fromfile(input_file_path, dtype=np.float32)
 
+points = point_cloud[1:].reshape(-1, 3)  # Expecting  XYZ-Pointcloud
 
-points = point_cloud[1:].reshape(-1, 3)  # Annahme:  XYZ-Daten ab 
-
-# Filtere die Punkte basierend auf den Bedingungen für X und Y
+# Filter point cloud w.r.t. Z-Value
 filtered_points = points[(points[:, 2] <= 550)]
 
 output_file_path_scene = 'input_data/Visionerf_calib/point_cloud_whole_scene_13_17_03.npy'

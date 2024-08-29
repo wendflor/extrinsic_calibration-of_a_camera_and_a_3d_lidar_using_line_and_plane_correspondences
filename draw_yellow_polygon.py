@@ -4,7 +4,7 @@ import numpy as np
 
 # Globale Variablen zum Speichern der Punkte und des Bildnamens
 points = []
-image_path = 'input_data/zed_calib/calib_zed.png'  
+image_path = 'input_data/zed_calib/calib_zed_08_23_13_17.png'  
 output_dir = 'input_data/zed_calib'
 
 # Bild laden

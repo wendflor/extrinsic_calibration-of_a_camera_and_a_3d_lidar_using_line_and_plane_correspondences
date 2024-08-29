@@ -387,7 +387,7 @@ def lidar_points_in_image(
     # keep points that are in front of LiDAR
     points_in_front_of_lidar = []
     for point_i in point_cloud:
-        if point_i[0] >= 0:
+        if point_i[2] >= 0:
             points_in_front_of_lidar.append(point_i)
     point_cloud = np.array(points_in_front_of_lidar)
     
@@ -423,7 +423,6 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
     point_cloud_on_target_path,
     point_cloud_whole_scene_path,
     calibration_target_path,
-    maximim_distance_two_consecutive_points_in_ray,
     num_row,
     num_col,
     square,
@@ -440,21 +439,17 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
     # convert BGR to RGB
     rgb_image = cv.cvtColor(img_bgr, cv.COLOR_BGR2RGB)
 
-
     ################################################################
     # Read Point Cloud
     ################################################################
     
     # point cloud of calibration target
     point_cloud_target = np.load(point_cloud_on_target_path)
-    # convert to mm
-    point_cloud_target *= 1000
 
     if point_cloud_whole_scene_path is not None:
         # point cloud of whole scence
         point_cloud_scene = np.load(point_cloud_whole_scene_path)
-        # convert to mm
-        point_cloud_scene *= 1000
+
 
     ################################################################
     # calibration information related to camera
@@ -462,9 +457,8 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
     calibration_data = read_yaml_file(path=calibration_target_path)
     print("Calibration Parameters:\n", calibration_data)
 
-
     ################################################################
-    # remove distortion from camera with intrensic parameters of camera
+    # remove distortion from camera with intrinsic parameters 
     ################################################################    
     rgb_image = cv.undistort(
         src=rgb_image, 
@@ -478,7 +472,6 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
     ################################################################
     plane_edges_equations_in_lidar_camera_coordinate = calculate_plane_equation_edges_equation_in_lidar_camera_coordinate(
                                                             point_cloud=point_cloud_target,
-                                                            maximim_distance_two_consecutive_points_in_ray=maximim_distance_two_consecutive_points_in_ray,
                                                             calibration_data=calibration_data,
                                                             rgb_image=rgb_image,
                                                             num_row=num_row,
@@ -589,11 +582,10 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
 if __name__ == '__main__':
     
     all_output = automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_plane_correspondences_2018(
-        img_rgb_path='input_data/zed_calib/calib_zed_yellow_edge.png',
-        point_cloud_on_target_path='input_data/Visionerf_calib/point_cloud_on_target.npy',
-        point_cloud_whole_scene_path='input_data/Visionerf_calib/point_cloud_whole scene.npy',
+        img_rgb_path='input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png',
+        point_cloud_on_target_path='input_data/Visionerf_calib/point_cloud_on_target_13_17_03.npy',
+        point_cloud_whole_scene_path='input_data/Visionerf_calib/point_cloud_whole_scene_13_17_03.npy',
         calibration_target_path='input_data/zed_calib/left_camera_calibration_parameters.yaml',
-        maximim_distance_two_consecutive_points_in_ray=10,
         num_row=6,
         num_col=8,
         square=25,

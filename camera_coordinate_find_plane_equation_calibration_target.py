@@ -117,7 +117,7 @@ if __name__ == '__main__':
     # Read image
     ################################################################
     # read image
-    img_bgr = cv.imread('input_data/zed_calib/calib_zed_yellow_edge.png')
+    img_bgr = cv.imread('input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png')
 
     # convert BGR to RGB
     rgb_image = cv.cvtColor(img_bgr, cv.COLOR_BGR2RGB)
@@ -133,7 +133,7 @@ if __name__ == '__main__':
                             rgb_img=rgb_image,
                             num_row=6,
                             num_col=8,
-                            square=152,
+                            square=25,
                             camera_matrix=calibration_data['camera_matrix'],
                             distortion_coefficients=calibration_data['distortion_coefficients'],
                             display=True

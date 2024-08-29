@@ -212,7 +212,7 @@ def conver_2d_line_equation_to_homogenous_format(line_equation):
 
 if __name__ == '__main__':
 
-    for img_path in ['input_data/zed_calib/calib_zed_yellow_edge.png']:
+    for img_path in ['input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png']:
         # read image
         img_bgr = cv2.imread(img_path)
 
