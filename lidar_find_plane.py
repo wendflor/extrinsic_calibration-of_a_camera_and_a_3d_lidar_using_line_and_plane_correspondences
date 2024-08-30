@@ -93,7 +93,7 @@ if __name__ == '__main__':
     #print(output_dic['plane_equation'])
     #print('Calculated Plane Equation:')
     #input_file_path = 'example_real_img_lidar_points/selected_points_in_lidar-1.npy'
-    input_file_path = 'input_data/Visionerf_calib/point_cloud_on_target_13_17_03.npy'  
+    input_file_path = 'input_data/Visionerf_calib/point_cloud_on_target_170mm_18mm_08_30_16_20_22.npy'  
     points = np.load(input_file_path) # Load  point cloud as a numpy array (N, 3)
     print(f"Number of Points: '{points.shape[0]}'")
     best_ratio_plane=ransac_plane_in_lidar(points)

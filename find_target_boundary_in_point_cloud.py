@@ -90,7 +90,7 @@ def find_boundary_points_of_point_cloud(points, display=False):
 if __name__ == '__main__':  
 
     # load point cloud from numpy array
-    point_cloud_path = "input_data/Visionerf_calib/point_cloud_on_target_13_17_03.npy"
+    point_cloud_path = "input_data/Visionerf_calib/point_cloud_on_target_170mm_18mm_08_30_16_20_22.npy"
     point_cloud = np.load(point_cloud_path)
     noisy_edge_points_dic = find_boundary_points_of_point_cloud(point_cloud, display =False)
     print(noisy_edge_points_dic)

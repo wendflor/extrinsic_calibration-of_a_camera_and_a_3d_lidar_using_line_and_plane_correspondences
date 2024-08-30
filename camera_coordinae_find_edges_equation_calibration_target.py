@@ -53,7 +53,7 @@ def find_edge_equation_in_camera_coordinate(line_equation_image, plane_camera_co
 
 if __name__ == '__main__':
 
-    for img_path in ['input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png']:
+    for img_path in ['input_data/zed_calib/calib_zed_170mm_18mm_08_30_16_20.png']:
         
         #####################################
         #   Read Image
@@ -78,7 +78,7 @@ if __name__ == '__main__':
                             rgb_img=rgb_image,
                             num_row=6,
                             num_col=8,
-                            square=25,
+                            square=18,
                             camera_matrix=calibration_data['camera_matrix'],
                             distortion_coefficients=calibration_data['distortion_coefficients'],
                             display=True

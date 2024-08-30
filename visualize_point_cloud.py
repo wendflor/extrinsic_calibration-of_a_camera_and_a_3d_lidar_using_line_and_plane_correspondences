@@ -1,13 +1,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+binary = False
+#file_path = 'input_data/Visionerf_calib/XYZcloud_16_20_22.bin'  # Pfad zu .bin-Datei
+file_path='input_data/Visionerf_calib/point_cloud_on_target_170mm_18mm_08_30_16_20_22.npy'
 
+if binary == True:
 # Binärdatei einlesen
-file_path = 'input_data/Visionerf_calib/XYZcloud_13_17_03.bin'  # Pfad zu .bin-Datei
-point_cloud = np.fromfile(file_path, dtype=np.float32)
+    
+    point_cloud = np.fromfile(file_path, dtype=np.float32)
 
 
-points = point_cloud[1:].reshape(-1, 3)  # Annahme:  XYZ-Daten  
+    points = point_cloud[1:].reshape(-1, 3)  # Annahme:  XYZ-Daten  
+else :
+    points= np.load(file_path)
 
 # Filtere die Punkte basierend auf den Bedingungen für X und Y
 filtered_points = points[(points[:, 2] <= 550)]

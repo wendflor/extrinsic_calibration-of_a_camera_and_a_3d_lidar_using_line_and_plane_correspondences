@@ -13,7 +13,8 @@ def segment_yellow_color(img):
     img: it gets an image in HSV format
     """    
     # yellow
-    frame_threshold = cv2.inRange(img, (20, 100, 100), (30, 255, 255))
+    #frame_threshold = cv2.inRange(img, (20, 100, 100), (30, 255, 255))
+    frame_threshold = cv2.inRange(img, (30, 100, 100), (40, 255, 255))
 
     return frame_threshold
 
@@ -212,7 +213,7 @@ def conver_2d_line_equation_to_homogenous_format(line_equation):
 
 if __name__ == '__main__':
 
-    for img_path in ['input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png']:
+    for img_path in ['input_data/zed_calib/calib_zed_170mm_18mm_08_30_16_20.png']:
         # read image
         img_bgr = cv2.imread(img_path)
 
@@ -237,3 +238,39 @@ if __name__ == '__main__':
             plt.figure()
             plt.imshow(img)
         plt.show()
+    '''
+    img_bgr= cv2.imread('input_data/zed_calib/calib_zed_170mm_18mm_08_30_16_20.png')
+    #img_bgr = cv2.imread('input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png')
+    img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+    hsv_image = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2HSV)
+    color_mask = segment_yellow_color(hsv_image)
+    #print(color_mask)
+    
+    bigest_component = find_biggest_connected_component(img=color_mask)
+
+    points_on_edges = find_points_on_edges(img=bigest_component)
+
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(10, 5))
+
+    # Anzeigen des ersten Bildes
+    ax1.imshow(hsv_image)
+    ax1.set_title('Bild 1')
+    ax1.axis('off')  # Achsen ausblenden
+
+    # Anzeigen des zweiten Bildes
+    ax2.imshow(color_mask)
+    ax2.set_title('Bild 2')
+    ax2.axis('off')  # Achsen ausblenden
+
+    # Anzeigen des dritten Bildes
+    ax3.imshow(bigest_component)
+    ax3.set_title('Bild 3')
+    ax3.axis('off')  # Achsen ausblenden
+
+    # Anpassen des Layouts
+    plt.tight_layout()
+
+    # Anzeigen der Plots
+    plt.show()
+    cv2.imwrite('color_mask_170.png', color_mask )
+    ''' 

@@ -17,7 +17,7 @@ def calculate_plane_equation_by_three_points(three_points):
     vec_1 = three_points[1, :] - three_points[0, :]
     vec_2 = three_points[2, :] - three_points[0, :] 
     normal = np.cross(vec_1, vec_2)
-    if normal[2] > 0: # vorher <0 
+    if normal[2] < 0: # vorher <0 
         normal *= -1
     normal /= np.linalg.norm(normal)
     d = -1 * (normal[0] * three_points[0, 0] + normal[1] * three_points[0, 1] + normal[2] * three_points[0, 2])
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     # Read image
     ################################################################
     # read image
-    img_bgr = cv.imread('input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png')
+    img_bgr = cv.imread('input_data/zed_calib/calib_zed_170mm_18mm_08_30_16_20.png')
 
     # convert BGR to RGB
     rgb_image = cv.cvtColor(img_bgr, cv.COLOR_BGR2RGB)
@@ -133,7 +133,7 @@ if __name__ == '__main__':
                             rgb_img=rgb_image,
                             num_row=6,
                             num_col=8,
-                            square=25,
+                            square=18,
                             camera_matrix=calibration_data['camera_matrix'],
                             distortion_coefficients=calibration_data['distortion_coefficients'],
                             display=True

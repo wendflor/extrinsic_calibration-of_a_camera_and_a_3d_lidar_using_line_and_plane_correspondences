@@ -55,10 +55,10 @@ def find_corners_on_calibration_target(img, num_row, num_col, square, display=Fa
 if __name__ == '__main__':
     
     # read image from file
-    img = cv.imread('input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png')
+    img = cv.imread('input_data/zed_calib/calib_zed_170mm_18mm_08_30_16_20.png')
     img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 
     # find corners on calibration target
-    points_3d_image_image_subpix = find_corners_on_calibration_target(img=img, num_row=6, num_col=8, square=25, display=True)
+    points_3d_image_image_subpix = find_corners_on_calibration_target(img=img, num_row=6, num_col=8, square=18, display=True)
 
     print(points_3d_image_image_subpix)

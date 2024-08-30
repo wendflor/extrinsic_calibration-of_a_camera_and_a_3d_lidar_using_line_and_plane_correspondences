@@ -582,13 +582,13 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
 if __name__ == '__main__':
     
     all_output = automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_plane_correspondences_2018(
-        img_rgb_path='input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png',
-        point_cloud_on_target_path='input_data/Visionerf_calib/point_cloud_on_target_13_17_03.npy',
-        point_cloud_whole_scene_path='input_data/Visionerf_calib/point_cloud_whole_scene_13_17_03.npy',
+        img_rgb_path='input_data/zed_calib/calib_zed_170mm_18mm_08_30_16_20.png',
+        point_cloud_on_target_path='input_data/Visionerf_calib/point_cloud_on_target_170mm_18mm_08_30_16_20_22.npy',
+        point_cloud_whole_scene_path='input_data/Visionerf_calib/point_cloud_whole_scene_170mm_18mm_08_30_16_20_22.npy',
         calibration_target_path='input_data/zed_calib/left_camera_calibration_parameters.yaml',
         num_row=6,
         num_col=8,
-        square=25,
+        square=18,
         display=False,
         save_path='output_data/'
     )

@@ -296,7 +296,7 @@ def find_edges_of_calibration_target_in_lidar(lidar_points, plane_equation, disp
     return all_edges_equations, denoised_plane_centroid, denoised_edges_centroid, plt_images, denoised_plane_points, denoised_edges_points, noisy_plane_points, noisy_edges_points
 
 if __name__ == '__main__':
-    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_on_target_13_17_03.npy')
+    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_on_target_170mm_18mm_08_30_16_20_22.npy')
     
 
     best_ratio_plane = ransac_plane_in_lidar(point_cloud)

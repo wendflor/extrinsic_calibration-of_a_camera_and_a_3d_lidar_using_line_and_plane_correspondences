@@ -51,7 +51,7 @@ if __name__ == '__main__':
     #######################################
     # Real Data example 1
     #######################################
-    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_on_target_13_17_03.npy')
+    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_on_target_170mm_18mm_08_30_16_20_22.npy')
     # convert to mm
     #point_cloud *= 1000
 

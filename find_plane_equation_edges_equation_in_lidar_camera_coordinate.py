@@ -94,7 +94,7 @@ if __name__ == '__main__':
     # Read image
     ################################################################
     # read image
-    img_bgr = cv.imread('input_data/zed_calib/calib_zed_08_23_13_17_yellow_edge.png')
+    img_bgr = cv.imread('input_data/zed_calib/calib_zed_170mm_18mm_08_30_16_20.png')
 
     # convert BGR to RGB
     rgb_image = cv.cvtColor(img_bgr, cv.COLOR_BGR2RGB)
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     ################################################################
     # Read Point Cloud
     ################################################################
-    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_on_target_13_17_03.npy')
+    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_on_target_170mm_18mm_08_30_16_20_22.npy')
 
     ################################################################
     # calibration information related to camera
@@ -121,7 +121,7 @@ if __name__ == '__main__':
                                                             rgb_image=rgb_image,
                                                             num_row=6,
                                                             num_col=8,
-                                                            square=25,
+                                                            square=18,
                                                             display=False
                                                         )
 
