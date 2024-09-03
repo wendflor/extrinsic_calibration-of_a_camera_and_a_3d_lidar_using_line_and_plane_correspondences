@@ -359,8 +359,8 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
             lidar_plane_points=lidar_points_on_plane,
             lidar_edges_points=lidar_points_on_edges
         )
-    
-    result = least_squares(fun=fun, x0=x0, verbose=2)
+    # Adapted least square command result = least_squares(fun=fun, x0=x0, verbose=2)
+    result = least_squares(fun=fun, x0=x0, verbose=2, ftol= 0.000000001, xtol =0.000000001, max_nfev=100000 )
     
     if keep_rotation_matrix_orthogonal == True:
         rotation_vec = result.x[0:3]
@@ -460,12 +460,13 @@ def automatic_extrinsic_calibration_of_a_camera_and_a_3D_lidar_using_line_and_pl
     ################################################################
     # remove distortion from camera with intrinsic parameters 
     ################################################################    
+    '''
     rgb_image = cv.undistort(
         src=rgb_image, 
         cameraMatrix=calibration_data['camera_matrix'],
         distCoeffs=calibration_data['distortion_coefficients']
         )
-    
+    '''
     ################################################################
     # Calculate plane equation and edges equations for calibration
     # target inside lidar and camera coordinate system
