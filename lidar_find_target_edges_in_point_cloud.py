@@ -274,7 +274,7 @@ def find_edges_of_calibration_target_in_lidar(lidar_points, plane_equation, disp
     plt_img = show_point_cloud(point_cloud=[point_cloud_mapped_on_lines, dic_point_border['border_point_cloud']], marker='o', title='Points on Calibration Target Edges')
     plt_images['points_on_calibration_target_edges'] = np.copy(plt_img)
     '''
-    plt_img = show_point_cloud(point_cloud=[denoised_edges_points['left_lower_points'], denoised_edges_points['left_upper_points'], denoised_edges_points['right_lower_points'], denoised_edges_points['right_upper_points']], marker='o', title='Left Lower, Left Upeer, Right Lower and Right Upper Points on Edges')
+    plt_img = show_point_cloud(point_cloud=[denoised_edges_points['left_lower_points'], denoised_edges_points['left_upper_points'], denoised_edges_points['right_lower_points'], denoised_edges_points['right_upper_points']], marker='o', title='Left Lower, Left Upper, Right Lower and Right Upper Points on Edges')
     plt_images['points_on_edges'] = np.copy(plt_img)
 
     left_lower_pointcloud = generate_point_line(line_equation=left_lower_equation)
@@ -296,10 +296,10 @@ def find_edges_of_calibration_target_in_lidar(lidar_points, plane_equation, disp
     return all_edges_equations, denoised_plane_centroid, denoised_edges_centroid, plt_images, denoised_plane_points, denoised_edges_points, noisy_plane_points, noisy_edges_points
 
 if __name__ == '__main__':
-    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_on_target_170mm_18mm_08_30_16_20_22.npy')
+    point_cloud = np.load('input_data/Visionerf_calib/point_cloud_on_target_0000.npy')
     
 
     best_ratio_plane = ransac_plane_in_lidar(point_cloud)
     plane_equation=best_ratio_plane['plane_equation']
-    edges_equations = find_edges_of_calibration_target_in_lidar(point_cloud, plane_equation)[0]
+    edges_equations = find_edges_of_calibration_target_in_lidar(point_cloud, plane_equation, display=True)[0]
     print(edges_equations)

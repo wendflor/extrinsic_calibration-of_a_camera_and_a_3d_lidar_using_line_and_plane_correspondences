@@ -158,7 +158,7 @@ def line_equation_four_edges_calibration_target_in_camera_image(rgb_image, displ
         best_ratio_line = ransac_line_in_image(lidar_point=points, 
                                                maximum_iteration=800, 
                                                inlier_ratio=0.9,
-                                               distance_to_be_inlier=1)
+                                               distance_to_be_inlier=0.5)
 
         line_equation = best_ratio_line['line_equation']
 
@@ -173,7 +173,7 @@ def line_equation_four_edges_calibration_target_in_camera_image(rgb_image, displ
         else:
             raise ValueError('Name of edge is not correct')
 
-    # generate images forline equations
+    # generate images for line equations
     fig = plt.figure()
     plt.imshow(rgb_image)
     for line_name in lines_equations:
@@ -213,7 +213,7 @@ def conver_2d_line_equation_to_homogenous_format(line_equation):
 
 if __name__ == '__main__':
 
-    for img_path in ['input_data/zed_calib/calib_zed_170mm_18mm_08_30_16_20.png']:
+    for img_path in ['input_data/zed_calib/zed_calib_0000.png']:
         # read image
         img_bgr = cv2.imread(img_path)
 

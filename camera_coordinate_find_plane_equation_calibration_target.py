@@ -3,6 +3,7 @@ from tkinter.messagebox import NO
 import cv2 as cv
 import numpy as np
 
+from lidar_find_plane import ransac_plane_in_lidar
 from camera_image_find_calibration_target_in_camera import \
     find_corners_on_calibration_target
 from read_calibration_file import read_yaml_file
@@ -82,6 +83,37 @@ def get_calibration_target_plane_equation_in_image(object_points, image_points, 
 
     return plane_equation
 
+def get_calibration_target_plane_equation_in_image_ransac(object_points, image_points, camera_matrix, distortion_coefficients):
+    """
+    Find plane equation of a calibration target inside and image. The plane equation is in camera coordinate system and in 
+    homogenous format
+    """
+
+    rvec_tvec = rotation_and_translation_of_target_in_camera_image(object_points=object_points,
+                                                       image_points=image_points,
+                                                       camera_matrix=camera_matrix,
+                                                       distortion_coefficients=distortion_coefficients)
+
+    if rvec_tvec is None:
+        return None
+    
+    # rotation vector (numpy array 3 * 1)
+    rvec = rvec_tvec['rotation_vector']
+    # translation vector (numpy array 3 * 1)
+    tvec = rvec_tvec['translation_vector']
+
+    # convert rotation vector to rotation matrix
+    rotation_matrix, _ = cv.Rodrigues(src=rvec)
+
+    # rotate and translate points from object to camera coordinate
+    points_camera_coordinate = np.dot(rotation_matrix, object_points.T) + tvec
+    points_camera_coordinate = points_camera_coordinate.T
+
+    # calculate plane equation
+    plane_equation = ransac_plane_in_lidar(points_camera_coordinate)
+
+    return plane_equation
+
 
 def camera_coordinate_plane_equation_calibration_target(rgb_img, num_row, num_col, square, camera_matrix, distortion_coefficients, display=False):
     """
@@ -99,7 +131,7 @@ def camera_coordinate_plane_equation_calibration_target(rgb_img, num_row, num_co
 
     if points_3d_image_image_subpix is None:
         raise ValueError('Can not find corners on checkerboard.')
-
+    
     # find plane equation of calibtarion target inside image
     plane_equation = get_calibration_target_plane_equation_in_image(
                                 object_points=points_3d_image_image_subpix['points_in_3D'],
@@ -141,3 +173,4 @@ if __name__ == '__main__':
 
     print('Plane Equation:')
     print(plane_equation)
+    

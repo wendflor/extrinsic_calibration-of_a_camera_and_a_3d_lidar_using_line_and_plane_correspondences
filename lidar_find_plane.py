@@ -31,7 +31,7 @@ def find_inliers(distance_points_to_plane, distance_to_be_inlier):
 
     return inliers_index
 
-def ransac_plane_in_lidar(lidar_point, maximum_iteration=50000, inlier_ratio=0.99, distance_to_be_inlier=2):
+def ransac_plane_in_lidar(lidar_point, maximum_iteration=50000, inlier_ratio=0.99, distance_to_be_inlier=0.5):
     """
     lidar_point: numpy array with shape of (n, 3), all measurements are in mm.
     maximum_iteration: maximum iteration before halting the program.
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     #print(output_dic['plane_equation'])
     #print('Calculated Plane Equation:')
     #input_file_path = 'example_real_img_lidar_points/selected_points_in_lidar-1.npy'
-    input_file_path = 'input_data/Visionerf_calib/point_cloud_on_target_170mm_18mm_08_30_16_20_22.npy'  
+    input_file_path = 'input_data/Visionerf_calib/point_cloud_on_target_0000.npy'  
     points = np.load(input_file_path) # Load  point cloud as a numpy array (N, 3)
     print(f"Number of Points: '{points.shape[0]}'")
     best_ratio_plane=ransac_plane_in_lidar(points)

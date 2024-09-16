@@ -3,7 +3,9 @@ import open3d as o3d
 
 def find_boundary_points_of_point_cloud(points, display=False):
     pcd = o3d.t.geometry.PointCloud(points)
-    pcd.estimate_normals(max_nn=50, radius=5)
+
+    pcd.estimate_normals(max_nn=30, radius=20)
+    
 
     boundarys, mask = pcd.compute_boundary_points(5, 50)
     boundarys = boundarys.paint_uniform_color([1.0, 0.0, 0.0])
@@ -40,6 +42,24 @@ def find_boundary_points_of_point_cloud(points, display=False):
     print(f"Bottom corner (x_max): {bottom_corner}")
     print(f"Right corner (y_min): {right_corner}")
     '''
+    # Set exclusion radius (20 mm)
+    exclusion_radius = 20
+
+    def is_within_radius(point, corner, radius):
+        return np.linalg.norm(point - corner) <= radius
+
+    # Create a mask to exclude points near any of the corner points using vectorized operations
+    mask_exclude = np.array([
+        not (is_within_radius(pt[:2], top_corner, exclusion_radius) or
+             is_within_radius(pt[:2], left_corner, exclusion_radius) or
+             is_within_radius(pt[:2], bottom_corner, exclusion_radius) or
+             is_within_radius(pt[:2], right_corner, exclusion_radius))
+        for pt in boundary_points
+    ])
+    # Apply the mask to exclude points within the exclusion radius
+    filtered_points = boundary_points[mask_exclude]
+
+
 
     # Listen für die Punkte in jedem Bereich
     left_upper_points = []
@@ -48,7 +68,7 @@ def find_boundary_points_of_point_cloud(points, display=False):
     right_upper_points = []
 
     # Zuordnung der Punkte zu den Bereichen basierend auf ihren x- und y-Werten
-    for point in boundary_points:
+    for point in filtered_points:
         x, y = point[0], point[1]
         
         # upper_left_points: Zwischen top_corner und left_corner
@@ -68,10 +88,10 @@ def find_boundary_points_of_point_cloud(points, display=False):
             right_upper_points.append(point)
 
     # Umwandeln in numpy arrays
-    left_upper_points = np.array(left_upper_points)
-    left_lower_points = np.array(left_lower_points)
-    right_lower_points = np.array(right_lower_points)
-    right_upper_points = np.array(right_upper_points)
+    left_upper_points = np.array(left_upper_points).astype(np.float64)
+    left_lower_points = np.array(left_lower_points).astype(np.float64)
+    right_lower_points = np.array(right_lower_points).astype(np.float64)
+    right_upper_points = np.array(right_upper_points).astype(np.float64)
     sum_all_points = len(left_upper_points)+ len(left_lower_points)+ len(right_lower_points)+ len(right_upper_points)
     '''
     # Ausgabe der Punkteanzahl in jeder Kategorie
@@ -83,14 +103,55 @@ def find_boundary_points_of_point_cloud(points, display=False):
     print(f"Total number of assigned points to edges: {sum_all_points}")
     
     if display == True:
+        pcd.transform([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
+        boundarys.transform([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
+
         o3d.visualization.draw_geometries([boundarys.to_legacy(), pcd.to_legacy()])
+
+        # Create Open3D point clouds for each region
+        pcd_left_upper = o3d.geometry.PointCloud()
+        pcd_left_upper.points = o3d.utility.Vector3dVector(left_upper_points)
+        # Assign a uniform color to all points (e.g., red [1.0, 0.0, 0.0])
+        colors_lu = np.tile([1.0, 0.0, 0.0], (left_upper_points.shape[0], 1)).astype(np.float64)
+        # Set the colors to the point cloud
+        pcd_left_upper.colors = o3d.utility.Vector3dVector(colors_lu)    
+
+        pcd_left_lower = o3d.geometry.PointCloud()
+        pcd_left_lower.points = o3d.utility.Vector3dVector(left_lower_points)
+        # Assign a uniform color to all points (green [0.0, 1.0, 0.0])
+        colors_ll = np.tile([0.0, 1.0, 0.0], (left_lower_points.shape[0], 1)).astype(np.float64)
+        # Set the colors to the point cloud
+        pcd_left_lower.colors = o3d.utility.Vector3dVector(colors_ll) 
+
+        pcd_right_lower = o3d.geometry.PointCloud()
+        pcd_right_lower.points = o3d.utility.Vector3dVector(right_lower_points)
+        # Assign a uniform color to all points ( yellow [1.0, 1.0, 0.0])
+        colors_rl = np.tile([1.0, 1.0, 0.0], (right_lower_points.shape[0], 1)).astype(np.float64)
+        # Set the colors to the point cloud
+        pcd_right_lower.colors = o3d.utility.Vector3dVector(colors_rl)        
+
+        pcd_right_upper = o3d.geometry.PointCloud()
+        pcd_right_upper.points = o3d.utility.Vector3dVector(right_upper_points)
+        # Assign a uniform color to all points ( blue [0.0, 0.0, 1.0])
+        colors_ru = np.tile([0.0, 0.0, 1.0], (right_upper_points.shape[0], 1)).astype(np.float64)
+        # Set the colors to the point cloud
+        pcd_right_upper.colors = o3d.utility.Vector3dVector(colors_ru)       
+
+        # Visualize all point clouds together
+        o3d.visualization.draw_geometries([pcd_left_upper, pcd_left_lower, pcd_right_lower, pcd_right_upper])
+
+
+
+
 
     return {'left_lower_points': left_lower_points, 'left_upper_points': left_upper_points, 'right_lower_points': right_lower_points, 'right_upper_points': right_upper_points}
 
 if __name__ == '__main__':  
 
+
     # load point cloud from numpy array
-    point_cloud_path = "input_data/Visionerf_calib/point_cloud_on_target_170mm_18mm_08_30_16_20_22.npy"
-    point_cloud = np.load(point_cloud_path)
-    noisy_edge_points_dic = find_boundary_points_of_point_cloud(point_cloud, display =False)
+    #point_cloud_path = "extrinsic_calibration-of_a_camera_and_a_3d_lidar_using_line_and_plane_correspondences/input_data/Visionerf_calib/point_cloud_on_target_0005.npy" # Debugger path
+    point_cloud_path = "input_data/Visionerf_calib/point_cloud_on_target_0000.npy"
+    point_cloud = np.load(point_cloud_path).astype(np.float64)
+    noisy_edge_points_dic = find_boundary_points_of_point_cloud(point_cloud, display =True)
     print(noisy_edge_points_dic)

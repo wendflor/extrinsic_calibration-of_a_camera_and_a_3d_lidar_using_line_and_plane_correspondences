@@ -31,7 +31,7 @@ def show_point_cloud(point_cloud, normal_vector=None, intersection_points=None, 
             ax.plot3D(point_could_temp[:, 0], point_could_temp[:, 1], point_could_temp[:, 2], 'gray', label='calibration target', marker=marker)
 
     # plot lidar
-    ax.scatter3D(0, 0, 0, 'green', label='LiDAR')
+    ax.scatter3D(0, 0, 0, 'green', label='Cirrus3D-300')
     
     # plot normal vector
     if normal_vector is not None:
@@ -42,7 +42,7 @@ def show_point_cloud(point_cloud, normal_vector=None, intersection_points=None, 
                   'red', label='Normal Vector')
 
     if intersection_points is not None:
-        ax.scatter3D(intersection_points[:, 0], intersection_points[:, 1], intersection_points[:, 2], 'blue', label='intersecion points')
+        ax.scatter3D(intersection_points[:, 0], intersection_points[:, 1], intersection_points[:, 2], 'blue', label='intersection points')
 
 
     ax.set_xlabel('X Axis')
